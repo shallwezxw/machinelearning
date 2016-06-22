@@ -1,3 +1,4 @@
+#coding=utf-8
 from numpy import *
 
 __author__ = 'root'
@@ -70,6 +71,11 @@ def trainNB0(trainMatrix, trainCategory):
     p1Num = zeros(numWords)  # p1Num = ones(numWords)
     p0Denom = 0.0  # p0Denom = 2.0
     p1Denom = 0.0  # p1Denom = 2.0
+
+    p0Num = ones(numWords)
+    p1Num = ones(numWords)
+    p0Denom = 2.0
+    p1Denom = 2.0
     """ ---------------"""
 
     for i in range(numTrainDocs):
@@ -82,6 +88,8 @@ def trainNB0(trainMatrix, trainCategory):
 
     p1Vect = p1Num / p1Denom  # log(p1Num/p1Denom)
     p0Vect = p0Num / p0Denom  # log(p0Num/p0Denom)
+    p1Vect = log(p1Num/p1Denom)
+    p0Vect = log(p1Num/p0Denom)
     return p0Vect, p1Vect, pAbusive
 
 
@@ -105,11 +113,11 @@ def spamTest():
     classList = []
     fullText = []
     for i in range(1, 26):
-        wordList = textParse(open('email/spam/%d.txt' % i).read())
+        wordList = textParse(open('/root/jd_git/data/machinelearninginaction/Ch04/email/spam/%d.txt' % i).read())
         docList.append(wordList)
         fullText.extend(wordList)
         classList.append(1)
-        wordList = textParse(open('email/ham/%d.txt' % i).read())
+        wordList = textParse(open('/root/jd_git/data/machinelearninginaction/Ch04/email/ham/%d.txt' % i).read())
         docList.append(wordList)
         fullText.extend(wordList)
         classList.append(0)
@@ -132,3 +140,9 @@ def spamTest():
         if classifyNB(array(wordVector), p0V, p1V, pSpam) != classList[docIndex]:
             errorCount += 1
     print 'the error rate is:', float(errorCount) / len(testSet)
+
+
+def main():
+    spamTest()
+if __name__ == '__main__':
+    main()
